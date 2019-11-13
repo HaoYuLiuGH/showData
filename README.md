@@ -3,8 +3,4 @@
 >1. 在 php 脚本中连接数据库
 >2. 将数据打包成 json 格式并返回
 >3. 利用ajax方法请求数据，并将请求到的数据分别存入两个数组（x和y）
->4. 调用echarts图表生成图形
-
-### 生成的图表如下
-
-![实例](C:\Users\li\Desktop\test2\photos\实例.PNG)
+>4. 调用echarts图表

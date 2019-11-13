@@ -14,14 +14,18 @@
   $array= array();
   class User
   {
-    public $name;
-    public $age;
+    public $time;
+    public $sum;
+    public $sex;
+    public $level;
   }
   while($row = mysqli_fetch_array($result,MYSQLI_ASSOC))
   {
     $user=new User();
-    $user->name = $row['time'];
-    $user->age = $row['sum'];
+    $user->time = $row['time'];
+    $user->sum= $row['sum'];
+    $user->sex = $row['sex'];
+    $user->level = $row['level'];
     $array[]=$user;
   }
 

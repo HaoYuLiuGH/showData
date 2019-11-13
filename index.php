@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>数据展示 test</title>
@@ -8,94 +9,277 @@
 </head>
 
 <body>
-    <div id="main" style="height:400px"></div>
+    <div id="table1" style="height:800px"></div>
+    <div id="table2" style="height:800px"></div>
     <script type="text/javascript">
-        
-        var arr1=new Array(),arr2=new Array();
-        function arrTest()
-        {
-          $.ajax
-          ({
-            type: "post",
-            async: false,
-            url: "test.php",
-            data: {},
-            dataType: "json",
-            success: function(result)
-            {
-              //alert(JSON.stringify(result));
-              if (result) 
-              {
-                for (var i = 0; i < result.length; i++) 
-                {
-                    arr1.push(result[i].name);
-                    arr2.push(result[i].age);
+        var arr1 = new Array(),
+            arr2 = new Array();
+        var man = 0;
+        var women = 0;
+        var level1 = 0;
+        var level2 = 0;
+        var level3 = 0;
+        var level4 = 0;
+        var level5 = 0;
+
+        function arrTest() {
+            $.ajax({
+                type: "post",
+                async: false,
+                url: "test.php",
+                data: {},
+                dataType: "json",
+                success: function(result) {
+                    //alert(JSON.stringify(result));
+                    if (result) {
+                        for (var i = 0; i < result.length; i++) {
+                            arr1.push(result[i].time);
+                            arr2.push(result[i].sum);
+                            switch (result[i].sex) {
+                                case 1:
+                                    man++;
+                                    break;
+                                case 0:
+                                    women++;
+                                    break;
+                            };
+                            switch (result[i].level) {
+                                case 1:
+                                    level1++;
+                                    break;
+                                case 2:
+                                    level2++;
+                                    break;
+                                case 3:
+                                    level3++;
+                                    break;
+                                case 4:
+                                    level4++;
+                                    break;
+                                case 5:
+                                    level5++;
+                                    break;
+                            }
+
+                        }
+                    }
+                },
+
+                error: function(errorMsg) {
+                    alert("Ajax获取服务器数据出错了！" + errorMsg);
+                    //myChart.hideLoading();
                 }
-              }
-            },
-            error: function(errorMsg)
-            {
-                alert("Ajax获取服务器数据出错了！"+ errorMsg);
-                myChart.hideLoading();
-            }
-          })
-          return arr1,arr2;
+            })
+            return arr1, arr2, man, women, level1, level2, level3, level4, level5
         }
-        
+
         arrTest();
-        var  myChart = echarts.init(document.getElementById('main'));
-        var option = { 
-            color: ['#3398DB'],
-            title:
-            {  
-                text: '各个发帖时间点以及数量'  
-            },  
-            tooltip : 
-            {
-                trigger: 'axis',
-                axisPointer : 
-               {                           // 坐标轴指示器，坐标轴触发有效
-                   type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-               }
-            }, 
-            grid: 
-            {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
+        var myChart1 = echarts.init(document.getElementById('table1'));
+        var myChart2 = echarts.init(document.getElementById('table2'));
+        var option1 = {
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b}: {c} ({d}%)"
             },
-            legend: 
-            {  
-                data:['时间点']  
-            },  
-            xAxis: [
-                {  
-                    type : 'category',  
-                    data : arr1,
-                    axisTick: 
-                    {
-                        alignWithLabel: true
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                data: ['男', '女', '等級一', '等级二', '等级三', '等级四', '等级五']
+            },
+            series: [{
+                    name: '性別',
+                    type: 'pie',
+                    selectedMode: 'single',
+                    radius: [0, '30%'],
+
+                    label: {
+                        normal: {
+                            position: 'inner'
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    data: [{
+                            value: man,
+                            name: '男',
+                            selected: true
+                        },
+                        {
+                            value: women,
+                            name: '女'
+                        }
+                    ]
+                },
+                {
+                    name: '言论等级',
+                    type: 'pie',
+                    radius: ['40%', '55%'],
+                    label: {
+                        normal: {
+                            formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
+                            backgroundColor: '#eee',
+                            borderColor: '#aaa',
+                            borderWidth: 1,
+                            borderRadius: 4,
+                            // shadowBlur:3,
+                            // shadowOffsetX: 2,
+                            // shadowOffsetY: 2,
+                            // shadowColor: '#999',
+                            // padding: [0, 7],
+                            rich: {
+                                a: {
+                                    color: '#999',
+                                    lineHeight: 22,
+                                    align: 'center'
+                                },
+                                // abg: {
+                                //     backgroundColor: '#333',
+                                //     width: '100%',
+                                //     align: 'right',
+                                //     height: 22,
+                                //     borderRadius: [4, 4, 0, 0]
+                                // },
+                                hr: {
+                                    borderColor: '#aaa',
+                                    width: '100%',
+                                    borderWidth: 0.5,
+                                    height: 0
+                                },
+                                b: {
+                                    fontSize: 16,
+                                    lineHeight: 33
+                                },
+                                per: {
+                                    color: '#eee',
+                                    backgroundColor: '#334455',
+                                    padding: [2, 4],
+                                    borderRadius: 2
+                                }
+                            }
+                        }
+                    },
+                    data: [{
+                            value: level1,
+                            name: '等级一'
+                        },
+                        {
+                            value: level2,
+                            name: '等级二'
+                        },
+                        {
+                            value: level3,
+                            name: '等级三'
+                        },
+                        {
+                            value: level4,
+                            name: '等级四'
+                        },
+                        {
+                            value: level5,
+                            name: '等级五'
+                        }
+                    ]
+                }
+            ]
+        };
+        var option2 = {
+            title: {
+                text: '各个发帖时间点以及数量'
+            },
+            xAxis: {
+                data: arr1,
+                axisLabel: {
+                    inside: true,
+                    textStyle: {
+                        color: '#fff'
+                    }
+                },
+                axisTick: {
+                    show: false
+                },
+                axisLine: {
+                    show: false
+                },
+                z: 10
+            },
+            yAxis: {
+                axisLine: {
+                    show: false
+                },
+                axisTick: {
+                    show: false
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: '#999'
                     }
                 }
-                ],  
-            yAxis: [{  
-                type : 'value'  
-            }
-            ],  
-            series: [
-                {  
-                    name : "时间点",  
-                    type : "line",  
-                    barWidth: '60%',
-                    data : arr2 
-            }
-            ]  
-        };  
-          
-          myChart.setOption(option);
-    
-</script>
+            },
+            dataZoom: [{
+                type: 'inside'
+            }],
+            series: [{ // For shadow
+                    type: 'bar',
+                    itemStyle: {
+                        normal: {
+                            color: 'rgba(0,0,0,0.05)'
+                        }
+                    },
+                    barGap: '-100%',
+                    barCategoryGap: '40%',
+                    data: arr2,
+                    animation: false
+                },
+                {
+                    type: 'bar',
+                    itemStyle: {
+                        normal: {
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 0, 1,
+                                [{
+                                        offset: 0,
+                                        color: '#83bff6'
+                                    },
+                                    {
+                                        offset: 0.5,
+                                        color: '#188df0'
+                                    },
+                                    {
+                                        offset: 1,
+                                        color: '#188df0'
+                                    }
+                                ]
+                            )
+                        },
+                        emphasis: {
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 0, 1,
+                                [{
+                                        offset: 0,
+                                        color: '#2378f7'
+                                    },
+                                    {
+                                        offset: 0.7,
+                                        color: '#2378f7'
+                                    },
+                                    {
+                                        offset: 1,
+                                        color: '#83bff6'
+                                    }
+                                ]
+                            )
+                        }
+                    },
+                    data: arr2,
+                }
+            ]
+        };
+        myChart1.setOption(option1);
+        myChart2.setOption(option2);
+    </script>
 </body>
-</html>
 
+</html>
