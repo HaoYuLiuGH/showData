@@ -13,14 +13,16 @@
     <div id="table2" style="height:800px"></div>
     <script type="text/javascript">
         var arr1 = new Array(),
-            arr2 = new Array();
-        var man = 0;
-        var women = 0;
-        var level1 = 0;
-        var level2 = 0;
-        var level3 = 0;
-        var level4 = 0;
-        var level5 = 0;
+            arr2 = new Array(),
+            arr3 = new Array(),
+            arr4 = new Array();
+        var man = 0,
+            women = 0,
+            level1 = 0,
+            level2 = 0,
+            level3 = 0,
+            level4 = 0,
+            level5 = 0;
 
         function arrTest() {
             $.ajax({
@@ -35,47 +37,42 @@
                         for (var i = 0; i < result.length; i++) {
                             arr1.push(result[i].time);
                             arr2.push(result[i].sum);
-                            switch (result[i].sex) {
-                                case 1:
-                                    man++;
-                                    break;
-                                case 0:
-                                    women++;
-                                    break;
-                            };
-                            switch (result[i].level) {
-                                case 1:
-                                    level1++;
-                                    break;
-                                case 2:
-                                    level2++;
-                                    break;
-                                case 3:
-                                    level3++;
-                                    break;
-                                case 4:
-                                    level4++;
-                                    break;
-                                case 5:
-                                    level5++;
-                                    break;
-                            }
-
+                            arr3.push(result[i].sex);
+                            arr4.push(result[i].level);
                         }
                     }
                 },
-
                 error: function(errorMsg) {
                     alert("Ajax获取服务器数据出错了！" + errorMsg);
                     //myChart.hideLoading();
                 }
             })
-            return arr1, arr2, man, women, level1, level2, level3, level4, level5
-        }
+            return arr1, arr2, arr3, arr4;
+        };
 
+        function dataTest(arr3, arr4) {
+            for (var i = 0; i < arr3.length; i++) {
+                if (arr3[i] == 0)
+                    man++;
+                else if (arr3[i] == 1)
+                    women++;
+            }
+            for (var i = 0; i < arr3.length; i++) {
+                if (arr4[i] == 1)
+                    level1++;
+                else if (arr4[i] == 2)
+                    level2++;
+                else if (arr4[i] == 3)
+                    level3++;
+                else if (arr4[i] == 4)
+                    level4++;
+                else if (arr4[i] == 5)
+                    level5++;
+            }
+            return man, women, level1, level2, level3, level4, level5;
+        }
         arrTest();
-        var myChart1 = echarts.init(document.getElementById('table1'));
-        var myChart2 = echarts.init(document.getElementById('table2'));
+        dataTest(arr3, arr4);
         var option1 = {
             tooltip: {
                 trigger: 'item',
@@ -84,7 +81,7 @@
             legend: {
                 orient: 'vertical',
                 x: 'left',
-                data: ['男', '女', '等級一', '等级二', '等级三', '等级四', '等级五']
+                data: ['男', '女', '等级一', '等级二', '等级三', '等级四', '等级五']
             },
             series: [{
                     name: '性別',
@@ -277,6 +274,13 @@
                 }
             ]
         };
+
+
+
+
+
+        var myChart1 = echarts.init(document.getElementById('table1'));
+        var myChart2 = echarts.init(document.getElementById('table2'));
         myChart1.setOption(option1);
         myChart2.setOption(option2);
     </script>
