@@ -5,5 +5,5 @@
 
     $mysql_password='9251'; 
 
-    $mysql_database='demo'; 
+    $mysql_database='showdata'; 
  ?>
