@@ -6,11 +6,48 @@
     <title>数据展示 test</title>
     <script src="incubator-echarts-master/dist/echarts.js"></script>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <link href="showData.css" rel="stylesheet">
 </head>
 
 <body>
-    <div id="table1" style="height:800px"></div>
-    <div id="table2" style="height:800px"></div>
+    <div id="nav">
+        <img style="float:left" src="../img/nav.png" />
+        <ul>
+            <li><a href="#bottom"><strong>关于</strong></a></li>
+            <li><a href="#table2"><strong>发表时间</strong></a></li>
+            <li><a href="#table1"><strong>言论评级</strong></a></li>
+            <li class="active"><a href="#"><strong>首页</strong></a></li>
+        </ul>
+    </div>
+    <div id="title">数据的统计与展示</div>
+    <div id="content">
+        <div id="area1">
+            <div id="table1"></div>
+            <div id="content1">
+                <p class="title">言论评级/<strong>01</strong></p>
+                <p>按言论等级、性别比例分别统计数据。其中言论按语义分为1~5五个等级。</p>
+            </div>
+
+        </div>
+        <div id="area2">
+            <div id="content2">
+                <p class="title">发表时间/<strong>02</strong></p>
+                <p>按时间记录每天言论的发表条数。</p>
+            </div>
+            <div id="table2"></div>
+        </div>
+    </div>
+    <div id="bottom">
+        <p class="p1">联系我们</p>
+        <p class="p2">您可以通过以下方式留下您的联系方式</p>
+        <div class="search">
+            <from action="#">
+                <input class="text" type="text" value="@email.com" />
+                <input class="btn" type="submit" value="提交" />
+            </from>
+        </div>
+    </div>
+    <div id="foot"><a href="#top">Back to top</a></div>
     <script type="text/javascript">
         var arr1 = new Array(),
             arr2 = new Array(),
@@ -183,9 +220,7 @@
             ]
         };
         var option2 = {
-            title: {
-                text: '各个发帖时间点以及数量'
-            },
+           
             xAxis: {
                 data: arr1,
                 axisLabel: {
@@ -274,10 +309,6 @@
                 }
             ]
         };
-
-
-
-
 
         var myChart1 = echarts.init(document.getElementById('table1'));
         var myChart2 = echarts.init(document.getElementById('table2'));
